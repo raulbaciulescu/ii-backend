@@ -2,38 +2,43 @@ package com.university.iibackend.controller;
 
 import com.university.iibackend.model.Chapter;
 import com.university.iibackend.model.dto.ChapterListingItem;
-import com.university.iibackend.repository.ChapterRepository;
+import com.university.iibackend.service.ChapterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/chapter")
 @RequiredArgsConstructor
 @CrossOrigin
 public class ChapterController {
-    private final ChapterRepository chapterRepo;
+    private final ChapterService service;
 
     @GetMapping
     public ResponseEntity<List<ChapterListingItem>> getChapters() {
-        List<Chapter> chaptersList = chapterRepo.findAll();
-        return ResponseEntity.ok(
-                chaptersList.stream()
-                        .map(chapter -> new ChapterListingItem(chapter.getId(), chapter.getTitle()))
-                        .toList()
-        );
+        return ResponseEntity.ok(service.findListingChapters());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Chapter> getEmployeesById(@PathVariable Integer id) {
+        Optional<Chapter> chapter = service.findChapterById(id);
+        return chapter
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/mock")
     public void addMockData() {
-        chapterRepo.save(
+        service.saveChapter(
                 Chapter.builder()
                         .title("1. Capitolul 1")
                         .text("Text lung 1")
@@ -41,7 +46,7 @@ public class ChapterController {
                         .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
                         .build()
         );
-        chapterRepo.save(
+        service.saveChapter(
                 Chapter.builder()
                         .title("2. Capitolul 2")
                         .text("Text lung 2")
@@ -49,7 +54,7 @@ public class ChapterController {
                         .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
                         .build()
         );
-        chapterRepo.save(
+        service.saveChapter(
                 Chapter.builder()
                         .title("3. Capitolul 3")
                         .text("Text lung 3")
@@ -61,6 +66,6 @@ public class ChapterController {
 
     @DeleteMapping("/mock")
     public void deleteAllChapters() {
-        chapterRepo.deleteAll();
+        service.deleteAllChapters();
     }
 }
