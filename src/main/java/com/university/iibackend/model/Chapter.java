@@ -24,8 +24,7 @@ public class Chapter {
     @GeneratedValue
     private Integer id;
     private String title;
-    @Lob
-    private String text;
+    private String pdfUrl;
     @Lob
     private String premiumArticle;
     private String videoUrl;
