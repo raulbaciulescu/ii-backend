@@ -10,7 +10,6 @@ import com.university.iibackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +51,7 @@ public class AuthenticationService {
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
         var user = userRepository.findByEmail(changePasswordRequest.getEmail())
                 .orElseThrow();
-        if(jwtService.isTokenValid(changePasswordRequest.getToken(), user)){
+        if (jwtService.isTokenValid(changePasswordRequest.getToken(), user)) {
             user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
             userRepository.save(user);
             return "Success";
@@ -60,13 +59,7 @@ public class AuthenticationService {
         return "Failed";
     }
 
-    public UserDetails getUserByEmail(String token, String email){
-        var user = userRepository.findByEmail(email)
-                .orElseThrow();
-        if(jwtService.isTokenValid(token, user)){
-            return user;
-        }
-        return null;
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
     }
-
 }
