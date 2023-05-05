@@ -48,15 +48,11 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public String changePassword(ChangePasswordRequest changePasswordRequest) {
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
         var user = userRepository.findByEmail(changePasswordRequest.getEmail())
                 .orElseThrow();
-        if (jwtService.isTokenValid(changePasswordRequest.getToken(), user)) {
-            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-            userRepository.save(user);
-            return "Success";
-        }
-        return "Failed";
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        userRepository.save(user);
     }
 
     public User getUserByEmail(String email) {
