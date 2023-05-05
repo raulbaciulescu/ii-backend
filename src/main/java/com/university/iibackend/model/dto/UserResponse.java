@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChangePasswordRequest {
+public class UserResponse {
+    private Integer id;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String newPassword;
+    // TODO("Not implemented yet")
+    private Integer score = 0;
 }
