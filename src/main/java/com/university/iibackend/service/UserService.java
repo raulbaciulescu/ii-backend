@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-
     private final UserRepository userRepository;
 
     @Autowired
