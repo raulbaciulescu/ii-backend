@@ -4,6 +4,7 @@ import com.university.iibackend.model.User;
 import com.university.iibackend.model.dto.ChangePasswordRequest;
 import com.university.iibackend.model.dto.UserResponse;
 import com.university.iibackend.service.AuthenticationService;
+import com.university.iibackend.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,24 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
-    private final AuthenticationService service;
+    private final AuthenticationService authenticationService;
+    private final QuizService quizService;
 
     @GetMapping("/{email}")
     public ResponseEntity<UserResponse> getUser(@PathVariable String email) {
-        User user = service.getUserByEmail(email);
+        User user = authenticationService.getUserByEmail(email);
+        int score = quizService.getTotalScoreForUser(user);
         return ResponseEntity.ok(
                 UserResponse.builder()
                         .id(user.getId())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
                         .email(user.getEmail())
-                        .score(9999) // TODO
+                        .score(score)
                         .build()
         );
     }
 
     @PostMapping("/change-password")
     public void changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        service.changePassword(changePasswordRequest);
+        authenticationService.changePassword(changePasswordRequest);
     }
 }

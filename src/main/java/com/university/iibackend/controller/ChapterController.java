@@ -1,15 +1,16 @@
 package com.university.iibackend.controller;
 
 import com.university.iibackend.model.Chapter;
+import com.university.iibackend.model.User;
 import com.university.iibackend.model.dto.ChapterListingItem;
 import com.university.iibackend.service.ChapterService;
+import com.university.iibackend.service.QuizAnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 @CrossOrigin
 public class ChapterController {
     private final ChapterService service;
+    private final QuizAnswerService ansService;
 
     @GetMapping
     public ResponseEntity<List<ChapterListingItem>> getChapters() {
@@ -31,41 +33,26 @@ public class ChapterController {
     @GetMapping("/{id}")
     public ResponseEntity<Chapter> getEmployeesById(@PathVariable Integer id) {
         Optional<Chapter> chapter = service.findChapterById(id);
+
+        boolean showArticle;
+        if (chapter.isPresent()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof User user) {
+                int maxScoreForChapter = ansService.getMaxScoreOnQuizForUser(user, chapter.get().getQuiz());
+                showArticle = maxScoreForChapter == 3;
+            } else {
+                showArticle = false;
+            }
+        } else {
+            showArticle = false;
+        }
+
         return chapter
-                .map(ResponseEntity::ok)
+                .map(it -> {
+                            it.setShowArticle(showArticle);
+                            return ResponseEntity.ok(it);
+                        }
+                )
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/mock")
-    public void addMockData() {
-        service.saveChapter(
-                Chapter.builder()
-                        .title("1. Capitolul 1")
-                        .pdfUrl("/chapter/pdf/chapter1.pdf")
-                        .premiumArticle("Articol lung 1")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-        service.saveChapter(
-                Chapter.builder()
-                        .title("2. Capitolul 2")
-                        .pdfUrl("/chapter/pdf/chapter2.pdf")
-                        .premiumArticle("Articol lung 2")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-        service.saveChapter(
-                Chapter.builder()
-                        .title("3. Capitolul 3")
-                        .pdfUrl("/chapter/pdf/chapter3.pdf")
-                        .premiumArticle("Articol lung 3")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-    }
-
-    @DeleteMapping("/mock")
-    public void deleteAllChapters() {
-        service.deleteAllChapters();
     }
 }
