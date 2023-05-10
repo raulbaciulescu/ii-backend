@@ -3,7 +3,6 @@ package com.university.iibackend.service;
 import com.university.iibackend.model.Chapter;
 import com.university.iibackend.model.dto.ChapterListingItem;
 import com.university.iibackend.repository.ChapterRepository;
-import com.university.iibackend.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
