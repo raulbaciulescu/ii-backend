@@ -1,5 +1,6 @@
 package com.university.iibackend.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,6 +20,7 @@ public class Question {
     @Id
     private Integer id;
 
+    @Column(length = 1000)
     private String text;
 
     @ElementCollection

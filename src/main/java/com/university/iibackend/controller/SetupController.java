@@ -72,9 +72,7 @@ public class SetupController {
         // quiz 4
         Question q10 = new Question(10, "Mecanismele generatoare ale schimbarii in cadrul teoriilor dialectice care explica procesele de schimbare organizationala sunt:", List.of("selectia pe baza de competitivitate si resursele limitate", "programele si reglementarile inerente organizatiei", "pluralismul, confruntarea si conflictul"), 2);
         Question q11 = new Question(11, "Schimbarea emergenta a culturii organizationale", List.of("se bazeaza pe natura dinamica si impredictibila a schimbarii si sustine ca schimbarile nu sunt mereu controlate", "se bazeaza pe teorii construite stiintific si verificate empiric si se bazeaza pe un process amplu si rational de analiza", "implica masurarea permanenta a rezultatelor"), 0);
-//        Question q12 = new Question(12, "... este definita ca un set de teorii, valori, strategii si tehnici comportamentale, fundamentate stiintific, avand ca scop schimbarea planificata a locului de munca, cu scopul dezvoltarii individuale si imbunatatirii performantei organizationale, prin schimbarea comportamentului membrilor organizatiei la locul de munca.", List.of("Diversitatea", "Dezvoltarea organizationala", "Teoria campului"), 1);
-        // TODO question 3 title is too large for database
-        Question q12 = new Question(12, "... este definita ca un set de teorii, valori, strategii si tehnici comportamentale, fundamentate stiintific", List.of("Diversitatea", "Dezvoltarea organizationala", "Teoria campului"), 1);
+        Question q12 = new Question(12, "... este definita ca un set de teorii, valori, strategii si tehnici comportamentale, fundamentate stiintific, avand ca scop schimbarea planificata a locului de munca, cu scopul dezvoltarii individuale si imbunatatirii performantei organizationale, prin schimbarea comportamentului membrilor organizatiei la locul de munca.", List.of("Diversitatea", "Dezvoltarea organizationala", "Teoria campului"), 1);
         Quiz quiz4 = new Quiz(4, List.of(q10, q11, q12));
         // chapter 4
         Chapter chapter4 = Chapter.builder()
