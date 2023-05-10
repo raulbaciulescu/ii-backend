@@ -21,13 +21,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "_chapter")
 public class Chapter {
     @Id
-    @GeneratedValue
     private Integer id;
     private String title;
     private String pdfUrl;
-    @Lob
-    private String premiumArticle;
+    private String articleUrl;
     private String videoUrl;
+    private Boolean showArticle;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "quiz_id", referencedColumnName = "id")

@@ -35,37 +35,4 @@ public class ChapterController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @PostMapping("/mock")
-    public void addMockData() {
-        service.saveChapter(
-                Chapter.builder()
-                        .title("1. Capitolul 1")
-                        .pdfUrl("/chapter/pdf/chapter1.pdf")
-                        .premiumArticle("Articol lung 1")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-        service.saveChapter(
-                Chapter.builder()
-                        .title("2. Capitolul 2")
-                        .pdfUrl("/chapter/pdf/chapter2.pdf")
-                        .premiumArticle("Articol lung 2")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-        service.saveChapter(
-                Chapter.builder()
-                        .title("3. Capitolul 3")
-                        .pdfUrl("/chapter/pdf/chapter3.pdf")
-                        .premiumArticle("Articol lung 3")
-                        .videoUrl("https://www.youtube.com/watch?v=KxqlJblhzfI&ab_channel=Amigoscode")
-                        .build()
-        );
-    }
-
-    @DeleteMapping("/mock")
-    public void deleteAllChapters() {
-        service.deleteAllChapters();
-    }
 }

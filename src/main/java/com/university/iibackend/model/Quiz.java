@@ -20,11 +20,8 @@ import lombok.NoArgsConstructor;
 public class Quiz {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Question> questions;
-
-    private String description;
 }
